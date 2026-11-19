@@ -41,7 +41,7 @@
   var joiner = base.indexOf('?') === -1 ? '?' : '&';
   var target = base + (query.length ? joiner + query.join('&') : '');
   document.getElementById('open').href = target;
-  document.getElementById('target').textContent = 'Link: ' + target;
+  document.getElementById('target').textContent = 'Link: ' + target + '  |  received app=' + (app === '' ? '(none)' : app) + '  |  accepted=' + allowed.test(app);
 </script>
 </body>
 </html>
