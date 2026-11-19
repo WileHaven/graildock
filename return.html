@@ -15,17 +15,29 @@
 <p id="message">Tap the button to return to the app.</p>
 <a class="button" id="open" href="collectibles://ebay-connected">Return to GrailDock</a>
 <script>
-  // Only the app's own link is ever built here; nothing from the address is used as a destination.
   var params = new URLSearchParams(location.search);
   var status = params.get('status');
+  var message = params.get('message');
+
   if (status === 'connected') {
     document.getElementById('title').textContent = 'eBay connected';
-    document.getElementById('message').textContent = 'You can go back to GrailDock now.';
+    document.getElementById('message').textContent = 'Tap the button to go back to GrailDock.';
   } else if (status === 'error') {
     document.getElementById('title').textContent = 'eBay was not connected';
-    document.getElementById('message').textContent = 'Go back to GrailDock and try again.';
+    document.getElementById('message').textContent = (message || 'Something went wrong.') + ' Go back to GrailDock and try again.';
   }
-  document.getElementById('open').href = 'collectibles://ebay-connected' + (status === 'connected' || status === 'error' ? '?status=' + status : '');
+
+  // The app link comes from the address, so only the app's own schemes are accepted.
+  // Anything else falls back to the app's default link, never to another site.
+  var app = params.get('app') || '';
+  var allowed = /^(collectibles|exp|exps):\/\/[A-Za-z0-9._~:\/@!$&'()*+,;=%-]*(\?[A-Za-z0-9._~:\/@!$&'()*+,;=%?-]*)?$/;
+  var base = allowed.test(app) ? app : 'collectibles://ebay-connected';
+
+  var query = [];
+  if (status === 'connected' || status === 'error') query.push('status=' + encodeURIComponent(status));
+  if (status === 'error' && message) query.push('message=' + encodeURIComponent(message));
+  var joiner = base.indexOf('?') === -1 ? '?' : '&';
+  document.getElementById('open').href = base + (query.length ? joiner + query.join('&') : '');
 </script>
 </body>
 </html>
