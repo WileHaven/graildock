@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Return to GrailDock</title>
+<style>
+  body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 480px; margin: 0 auto; padding: 48px 20px; text-align: center; color: #1a1a1a; }
+  a.button { display: inline-block; margin-top: 16px; padding: 14px 28px; background: #208AEF; color: #fff; border-radius: 12px; text-decoration: none; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }
+</style>
+</head>
+<body>
+<h1 id="title">Back to GrailDock</h1>
+<p id="message">Tap the button to return to the app.</p>
+<a class="button" id="open" href="collectibles://ebay-connected">Return to GrailDock</a>
+<script>
+  // Only the app's own link is ever built here; nothing from the address is used as a destination.
+  var params = new URLSearchParams(location.search);
+  var status = params.get('status');
+  if (status === 'connected') {
+    document.getElementById('title').textContent = 'eBay connected';
+    document.getElementById('message').textContent = 'You can go back to GrailDock now.';
+  } else if (status === 'error') {
+    document.getElementById('title').textContent = 'eBay was not connected';
+    document.getElementById('message').textContent = 'Go back to GrailDock and try again.';
+  }
+  document.getElementById('open').href = 'collectibles://ebay-connected' + (status === 'connected' || status === 'error' ? '?status=' + status : '');
+</script>
+</body>
+</html>
