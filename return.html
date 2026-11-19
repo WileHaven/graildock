@@ -15,7 +15,6 @@
 <p id="message">Tap the button to return to the app.</p>
 <a class="button" id="open" href="collectibles://ebay-connected">Return to GrailDock</a>
 <p id="hint" style="margin-top:28px;font-size:14px;opacity:.75">If the button does nothing, close this tab with the X at the top left. GrailDock will already show eBay as connected.</p>
-<p id="target" style="font-size:11px;opacity:.5;word-break:break-all"></p>
 <script>
   var params = new URLSearchParams(location.search);
   var status = params.get('status');
@@ -39,9 +38,7 @@
   if (status === 'connected' || status === 'error') query.push('status=' + encodeURIComponent(status));
   if (status === 'error' && message) query.push('message=' + encodeURIComponent(message));
   var joiner = base.indexOf('?') === -1 ? '?' : '&';
-  var target = base + (query.length ? joiner + query.join('&') : '');
-  document.getElementById('open').href = target;
-  document.getElementById('target').textContent = 'Link: ' + target + '  |  received app=' + (app === '' ? '(none)' : app) + '  |  accepted=' + allowed.test(app);
+  document.getElementById('open').href = base + (query.length ? joiner + query.join('&') : '');
 </script>
 </body>
 </html>
